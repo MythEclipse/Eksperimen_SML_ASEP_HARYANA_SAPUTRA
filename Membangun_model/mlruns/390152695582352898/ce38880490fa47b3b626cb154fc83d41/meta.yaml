@@ -1,0 +1,14 @@
+artifact_uri: /home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/Membangun_model/mlruns/390152695582352898/ce38880490fa47b3b626cb154fc83d41/artifacts
+end_time: 1772033742298
+entry_point_name: ''
+experiment_id: '390152695582352898'
+lifecycle_stage: active
+run_id: ce38880490fa47b3b626cb154fc83d41
+run_name: GradientBoosting_autolog
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1772033370212
+status: 3
+tags: []
+user_id: asephs

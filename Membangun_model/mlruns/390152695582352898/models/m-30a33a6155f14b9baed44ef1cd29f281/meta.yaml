@@ -1,0 +1,10 @@
+artifact_location: /home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/Membangun_model/mlruns/390152695582352898/models/m-30a33a6155f14b9baed44ef1cd29f281/artifacts
+creation_timestamp: 1772033735877
+experiment_id: '390152695582352898'
+last_updated_timestamp: 1772033737333
+model_id: m-30a33a6155f14b9baed44ef1cd29f281
+model_type: null
+name: model
+source_run_id: ce38880490fa47b3b626cb154fc83d41
+status: 2
+status_message: null

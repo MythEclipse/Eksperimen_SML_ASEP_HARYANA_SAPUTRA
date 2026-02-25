@@ -1,0 +1,10 @@
+digest: 490205ce
+name: dataset
+profile: '{"features_shape": [99940, 29], "features_size": 2898260, "features_nbytes":
+  23186080, "targets_shape": [99940], "targets_size": 99940, "targets_nbytes": 799520}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"type\": \"tensor\", \"tensor-spec\":
+  {\"dtype\": \"float64\", \"shape\": [-1, 29]}}]", "targets": "[{\"type\": \"tensor\",
+  \"tensor-spec\": {\"dtype\": \"int64\", \"shape\": [-1]}}]"}}'
+source: '{"tags": {"mlflow.user": "asephs", "mlflow.source.name": "Membangun_model/modelling.py",
+  "mlflow.source.type": "LOCAL"}}'
+source_type: code

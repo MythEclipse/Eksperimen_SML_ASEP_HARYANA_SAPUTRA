@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# MLflow — keep mlruns tracked (small) but exclude large model binaries if needed
+# Uncomment to exclude mlruns entirely:
+# Membangun_model/mlruns/
+# Workflow-CI/MLProject/mlruns/
+
+# Large raw files — tracked explicitly
+# pokerhand_raw/poker-hand-testing.data  # 23MB — exclude if needed
