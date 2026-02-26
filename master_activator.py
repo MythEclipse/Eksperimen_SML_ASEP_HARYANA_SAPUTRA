@@ -154,33 +154,25 @@ def capture_all_assets():
                 page.click('button[type="submit"]')
                 page.wait_for_timeout(3000)
 
-            print("Capturing Full Dashboard (showing name)...")
+            print("Capturing Full Dashboard (Branded)...")
             # Remove &kiosk to show the header with Dashboard name
             page.goto(f"{GRAFANA_URL}/d/poker-hand-monitoring?orgId=1")
             page.wait_for_timeout(7000)
             page.screenshot(path=str(MONITORING_DIR / "5.bukti monitoring Grafana/monitoring_dashboard_full.jpg"), full_page=True)
 
-            panels = ["total_requests", "p95_latency", "total_errors", "data_drift_psi", "uptime", "request_rate", "latency_percentiles", "prediction_dist", "feature_drift", "confidence", "batch_size"]
-            for i, name in enumerate(panels, 1):
-                page.goto(f"{GRAFANA_URL}/d/poker-hand-monitoring?viewPanel={i}&orgId=1&kiosk")
-                page.wait_for_timeout(4000)
-                page.screenshot(path=str(MONITORING_DIR / f"5.bukti monitoring Grafana/monitoring_{name}.jpg"))
+            print("Capturing Alerting Proofs (Rules & Notifications)...")
+            # 1. Rules list view (Proof of multiple rules)
+            page.goto(f"{GRAFANA_URL}/alerting/list")
+            page.wait_for_timeout(4000)
+            page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/rules_status_mytheclipse.jpg"), full_page=True)
 
-            print("Capturing Alerting Proofs...")
-            alert_views = [
-                ("rules_list.jpg", f"{GRAFANA_URL}/alerting/list"),
-                ("rules_ModelHighErrorRate.jpg", f"{GRAFANA_URL}/alerting/list?search=ModelHighErrorRate"),
-                ("rules_ModelHighLatency.jpg", f"{GRAFANA_URL}/alerting/list?search=ModelHighLatency"),
-                ("notifikasi_contact_points.jpg", f"{GRAFANA_URL}/alerting/notifications"),
-                ("notifikasi_policies.jpg", f"{GRAFANA_URL}/alerting/routes"),
-                ("notifikasi_fired_alert_authentic.jpg", f"{GRAFANA_URL}/alerting/list")
-            ]
-            for filename, url in alert_views:
-                page.goto(url)
-                page.wait_for_timeout(4000)
-                page.screenshot(path=str(MONITORING_DIR / f"6.bukti alerting Grafana/{filename}"))
+            # 2. Notification contact point proof
+            page.goto(f"{GRAFANA_URL}/alerting/notifications")
+            page.wait_for_timeout(4000)
+            page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/notifikasi_contact_point_mytheclipse.jpg"), full_page=True)
+
         except Exception as e:
-            print(f"Grafana capture failed: {e}")
+            print(f"Grafana/Alerting capture failed: {e}")
 
         browser.close()
 
