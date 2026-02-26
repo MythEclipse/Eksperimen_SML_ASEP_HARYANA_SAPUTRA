@@ -1,0 +1,6 @@
+outs:
+- md5: 968366525ab7ade345b7d9c8fd757452.dir
+  size: 33620285
+  nfiles: 5
+  hash: md5
+  path: pokerhand_preprocessing

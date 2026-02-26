@@ -1,0 +1,6 @@
+outs:
+- md5: 280d6c97ecac6265cb493283be30f00c.dir
+  size: 25157973
+  nfiles: 3
+  hash: md5
+  path: pokerhand_raw
