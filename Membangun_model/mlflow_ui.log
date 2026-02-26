@@ -1,0 +1,66 @@
+Backend store URI not provided. Using ./mlruns
+Registry store URI not provided. Using backend store URI.
+/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/server/handlers.py:342: FutureWarning: The filesystem tracking backend (e.g., './mlruns') is deprecated as of February 2026. Consider transitioning to a database backend (e.g., 'sqlite:///mlflow.db') to take advantage of the latest MLflow features. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance.
+  return FileStore(store_uri, artifact_uri)
+/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/server/handlers.py:377: FutureWarning: The filesystem model registry backend (e.g., './mlruns') is deprecated as of February 2026. Consider transitioning to a database backend (e.g., 'sqlite:///mlflow.db') to take advantage of the latest MLflow features. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance.
+  return FileStore(store_uri)
+[MLflow] Security middleware enabled with default settings (localhost-only). To allow connections from other hosts, use --host 0.0.0.0 and configure --allowed-hosts and --cors-allowed-origins.
+2026/02/27 03:35:27 WARNING mlflow.server: MLflow job execution requirements not met (MLflow job backend requires a database backend store URI but got ./mlruns). Server will start without job execution support. Errors will be surfaced at job invocation time.
+INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+INFO:     Started parent process [320553]
+INFO:     Started server process [320562]
+INFO:     Waiting for application startup.
+INFO:     Started server process [320563]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [320561]
+INFO:     Application startup complete.
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [320564]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49094 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /static-files/static/js/main.49592295.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47592 - "GET /static-files/static/css/main.e1790ccd.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /static-files/TelemetryLogger.telemetry-worker.e586432cbf500042667b.worker.js HTTP/1.1" 200 OK
+/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/server/handlers.py:342: FutureWarning: The filesystem tracking backend (e.g., './mlruns') is deprecated as of February 2026. Consider transitioning to a database backend (e.g., 'sqlite:///mlflow.db') to take advantage of the latest MLflow features. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance.
+  return FileStore(store_uri, artifact_uri)
+INFO:     127.0.0.1:47578 - "GET /ajax-api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /static-files/static/js/9501.b957c412.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47604 - "GET /ajax-api/3.0/mlflow/assistant/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /static-files/static/js/7271.ea8ed5ff.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47604 - "GET /static-files/static/js/1521.37760d87.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47604 - "GET /static-files/static/css/547.26533251.chunk.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /static-files/static/js/3617.f09cade8.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47610 - "GET /static-files/static/js/547.f54551ba.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47610 - "GET /static-files/static/media/demo-tracing-screenshot.f95794fa205aa8e6c386.png HTTP/1.1" 200 OK
+WARNING:root:Malformed experiment '1'. Detailed error Yaml file './mlruns/1/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/1/meta.yaml' does not exist.
+WARNING:root:Malformed experiment '2'. Detailed error Yaml file './mlruns/2/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/2/meta.yaml' does not exist.
+INFO:     127.0.0.1:47604 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47592 - "GET /ajax-api/3.0/mlflow/ui-telemetry HTTP/1.1" 200 OK
