@@ -31,3 +31,7 @@ mlruns/
 # Python artifacts
 *.pkl
 *.joblib
+
+# DVC
+.dvc/cache
+.dvc/tmp
