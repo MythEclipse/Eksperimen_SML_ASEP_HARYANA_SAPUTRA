@@ -166,10 +166,17 @@ def capture_all_assets():
             page.wait_for_timeout(4000)
             page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/rules_status_mytheclipse.jpg"), full_page=True)
 
-            # 2. Notification contact point proof
+            # 2. Notification contact point proof (SHOWING EMAIL)
+            print("Capturing Contact Point Proof (Email: superaseph@gmail.com)...")
             page.goto(f"{GRAFANA_URL}/alerting/notifications")
-            page.wait_for_timeout(4000)
+            page.wait_for_timeout(5000)
             page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/notifikasi_contact_point_mytheclipse.jpg"), full_page=True)
+            
+            # 3. Prometheus Targets (Proof of Node Exporter)
+            print("Capturing Prometheus Targets (Node Exporter proof)...")
+            page.goto(f"{PROM_URL}/targets")
+            page.wait_for_timeout(3000)
+            page.screenshot(path=str(MONITORING_DIR / "4.bukti monitoring Prometheus/prometheus_targets_node_exporter.jpg"), full_page=True)
 
         except Exception as e:
             print(f"Grafana/Alerting capture failed: {e}")

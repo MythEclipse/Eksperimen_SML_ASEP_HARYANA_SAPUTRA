@@ -273,3 +273,126 @@ Traceback (most recent call last):
 mlflow.exceptions.MissingConfigException: Yaml file './mlruns/2/meta.yaml' does not exist.
 INFO:     127.0.0.1:39064 - "GET /static-files/static/media/demo-tracing-screenshot.f95794fa205aa8e6c386.png HTTP/1.1" 200 OK
 INFO:     127.0.0.1:39054 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /static-files/static/js/main.49592295.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /static-files/static/css/main.e1790ccd.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /static-files/TelemetryLogger.telemetry-worker.e586432cbf500042667b.worker.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /ajax-api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /ajax-api/3.0/mlflow/ui-telemetry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /static-files/static/js/9501.b957c412.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /ajax-api/3.0/mlflow/assistant/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /static-files/static/js/1521.37760d87.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /static-files/static/js/7271.ea8ed5ff.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36964 - "GET /static-files/static/js/547.f54551ba.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36956 - "GET /static-files/static/css/547.26533251.chunk.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36948 - "GET /static-files/static/js/3617.f09cade8.chunk.js HTTP/1.1" 200 OK
+WARNING:root:Malformed experiment '1'. Detailed error Yaml file './mlruns/1/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/1/meta.yaml' does not exist.
+WARNING:root:Malformed experiment '2'. Detailed error Yaml file './mlruns/2/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/2/meta.yaml' does not exist.
+INFO:     127.0.0.1:36964 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36978 - "GET /static-files/static/media/demo-tracing-screenshot.f95794fa205aa8e6c386.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /static-files/static/js/main.49592295.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48466 - "GET /static-files/static/css/main.e1790ccd.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /static-files/TelemetryLogger.telemetry-worker.e586432cbf500042667b.worker.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /ajax-api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48466 - "GET /ajax-api/3.0/mlflow/ui-telemetry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /static-files/static/js/9501.b957c412.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48466 - "GET /ajax-api/3.0/mlflow/assistant/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /static-files/static/js/7271.ea8ed5ff.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48466 - "GET /static-files/static/js/1521.37760d87.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "GET /static-files/static/js/547.f54551ba.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48466 - "GET /static-files/static/css/547.26533251.chunk.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48454 - "GET /static-files/static/js/3617.f09cade8.chunk.js HTTP/1.1" 200 OK
+WARNING:root:Malformed experiment '1'. Detailed error Yaml file './mlruns/1/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/1/meta.yaml' does not exist.
+WARNING:root:Malformed experiment '2'. Detailed error Yaml file './mlruns/2/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/2/meta.yaml' does not exist.
+INFO:     127.0.0.1:48466 - "GET /static-files/static/media/demo-tracing-screenshot.f95794fa205aa8e6c386.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /static-files/static/js/main.49592295.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /static-files/static/css/main.e1790ccd.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /static-files/TelemetryLogger.telemetry-worker.e586432cbf500042667b.worker.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /ajax-api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /ajax-api/3.0/mlflow/ui-telemetry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /static-files/static/js/9501.b957c412.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /ajax-api/3.0/mlflow/assistant/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /static-files/static/js/1521.37760d87.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /static-files/static/js/7271.ea8ed5ff.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60778 - "GET /static-files/static/js/547.f54551ba.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60758 - "GET /static-files/static/js/3617.f09cade8.chunk.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /static-files/static/css/547.26533251.chunk.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60786 - "GET /static-files/static/media/demo-tracing-screenshot.f95794fa205aa8e6c386.png HTTP/1.1" 200 OK
+WARNING:root:Malformed experiment '1'. Detailed error Yaml file './mlruns/1/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/1/meta.yaml' does not exist.
+WARNING:root:Malformed experiment '2'. Detailed error Yaml file './mlruns/2/meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/store/tracking/file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+  File "/home/asephs/Pijak/Eksperimen_SML_ASEP_HARYANA_SAPUTRA/.venv/lib/python3.14/site-packages/mlflow/utils/yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file './mlruns/2/meta.yaml' does not exist.
+INFO:     127.0.0.1:60778 - "GET /ajax-api/2.0/mlflow/experiments/search?max_results=5&order_by=last_update_time+DESC HTTP/1.1" 200 OK

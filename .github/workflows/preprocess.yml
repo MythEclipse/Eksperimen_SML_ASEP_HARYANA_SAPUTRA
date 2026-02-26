@@ -1,76 +1,86 @@
-name: Preprocessing Pipeline — Poker Hand
+name: ML Pipeline — Poker Hand (Full Auto)
 
 on:
   push:
-    branches:
-      - main
-      - development
+    branches: [main, development]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      test_size:
-        description: 'Test split fraction (0.0–0.5)'
-        required: false
-        default: '0.2'
-      apply_smote:
-        description: 'Apply SMOTE balancing (true/false)'
-        required: false
-        default: 'true'
 
 jobs:
-  preprocess:
-    name: Run Preprocessing Pipeline
+  ml-pipeline:
     runs-on: ubuntu-latest
+    env:
+      DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Check Env
+        run: |
+          echo "GitHub User: ${{ github.actor }}"
+          echo "Project Root: $(pwd)"
 
-      - name: Run preprocessing automation script
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mlflow dagshub
+
+      - name: Preprocessing Data
         run: |
           python preprocessing/automate_ASEP_HARYANA_SAPUTRA.py \
             --raw-dir pokerhand_raw \
             --out-dir preprocessing/pokerhand_preprocessing \
-            --test-size ${{ github.event.inputs.test_size || '0.2' }} \
-            ${{ github.event.inputs.apply_smote == 'false' && '--no-smote' || '' }}
+            --test-size 0.2
 
-      - name: Verify output files
+      - name: Run MLflow Training (Sync to DagsHub)
         run: |
-          echo "Checking output files:"
-          ls -lh preprocessing/pokerhand_preprocessing/
           python -c "
-          import pandas as pd
-          X_train = pd.read_csv('preprocessing/pokerhand_preprocessing/X_train.csv')
-          X_test  = pd.read_csv('preprocessing/pokerhand_preprocessing/X_test.csv')
-          y_train = pd.read_csv('preprocessing/pokerhand_preprocessing/y_train.csv')
-          y_test  = pd.read_csv('preprocessing/pokerhand_preprocessing/y_test.csv')
-          print(f'X_train: {X_train.shape}, X_test: {X_test.shape}')
-          print(f'y_train: {y_train.shape}, y_test: {y_test.shape}')
-          print('Class distribution (y_train):')
-          print(y_train[\"CLASS\"].value_counts().sort_index())
+          import dagshub
+          import mlflow
+          import os
+          dagshub.init(repo_owner='mytheclipse', repo_name='Eksperimen_SML_ASEP_HARYANA_SAPUTRA', setup_mlflow=True)
+          os.system('python Membangun_model/modelling_tuning.py')
+          "
+        env:
+          MLFLOW_TRACKING_USERNAME: mytheclipse
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+
+      - name: Get Latest MLflow Run ID
+        id: run_id
+        run: |
+          python -c "
+          import mlflow
+          from mlflow.tracking import MlflowClient
+          client = MlflowClient()
+          experiment = client.get_experiment_by_name('Default')
+          runs = client.search_runs(experiment_ids=[experiment.experiment_id], order_by=['attribute.start_time DESC'], max_results=1)
+          if runs:
+              print(f'RUN_ID={runs[0].info.run_id}')
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write(f'RUN_ID={runs[0].info.run_id}\n')
           "
 
-      - name: Upload preprocessed data as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pokerhand-preprocessed-${{ github.run_number }}
-          path: preprocessing/pokerhand_preprocessing/
-          retention-days: 30
-
-      - name: Commit updated preprocessed data (on push to main)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Commit & Push Changes
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add preprocessing/pokerhand_preprocessing/
-          git diff --quiet && git diff --staged --quiet || \
-            git commit -m "ci: update preprocessed data [run ${{ github.run_number }}]"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "ci: automated data update [runID ${{ steps.run_id.outputs.RUN_ID }}]" && git push)
+
+      - name: Build and Push Docker Image
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest
