@@ -16,61 +16,72 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 1. Fetch Repository Contents
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: 2. Initialize Python Environment (3.11)
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
-      - name: Check Env
+      - name: 3. Verify GitHub Environment
         run: |
-          echo "GitHub User: ${{ github.actor }}"
-          echo "Project Root: $(pwd)"
+          echo "GitHub Actor: ${{ github.actor }}"
+          echo "Workspace: ${{ github.workspace }}"
 
-      - name: Install Dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install mlflow dagshub
+      - name: 4. Upgrade Package Installer (Pip)
+        run: pip install --upgrade pip
 
-      - name: Preprocessing Data
+      - name: 5. Install Project Dependencies
+        run: pip install -r requirements.txt
+
+      - name: 6. Provision ML Infrastructure (MLflow/DagsHub)
+        run: pip install mlflow dagshub
+
+      - name: 7. Execute Data Preprocessing Pipeline
         run: |
           python preprocessing/automate_ASEP_HARYANA_SAPUTRA.py \
             --raw-dir pokerhand_raw \
             --out-dir preprocessing/pokerhand_preprocessing \
             --test-size 0.2
 
-      - name: Run MLflow Training (Sync to DagsHub)
+      - name: 8. Initialize DagsHub MLflow Tracking
         run: |
           python -c "
           import dagshub
-          import mlflow
-          import os
           dagshub.init(repo_owner='mytheclipse', repo_name='Eksperimen_SML_ASEP_HARYANA_SAPUTRA', setup_mlflow=True)
-          os.system('python Membangun_model/modelling_tuning.py')
           "
         env:
           MLFLOW_TRACKING_USERNAME: mytheclipse
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
 
-      - name: Get Latest MLflow Run ID
+      - name: 9. Execute ML Model Training & Tuning
+        run: python Membangun_model/modelling_tuning.py
+        env:
+          MLFLOW_TRACKING_USERNAME: mytheclipse
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+
+      - name: 10. Extract MLflow Analytics (Run ID)
         id: run_id
         run: |
           python -c "
           import mlflow
           from mlflow.tracking import MlflowClient
+          import os
           client = MlflowClient()
-          experiment = client.get_experiment_by_name('Default')
-          runs = client.search_runs(experiment_ids=[experiment.experiment_id], order_by=['attribute.start_time DESC'], max_results=1)
-          if runs:
-              print(f'RUN_ID={runs[0].info.run_id}')
-              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                  f.write(f'RUN_ID={runs[0].info.run_id}\n')
+          try:
+              experiment = client.get_experiment_by_name('Default')
+              runs = client.search_runs(experiment_ids=[experiment.experiment_id], order_by=['attribute.start_time DESC'], max_results=1)
+              if runs:
+                  print(f'RUN_ID={runs[0].info.run_id}')
+                  with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                      f.write(f'RUN_ID={runs[0].info.run_id}\\n')
+          except Exception as e:
+              print(f'Metadata extraction error: {e}')
           "
 
-      - name: Commit & Push Changes
+      - name: 11. Synchronize Preprocessed Artifacts
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
         run: |
           git config user.name "github-actions[bot]"
@@ -78,9 +89,14 @@ jobs:
           git add preprocessing/pokerhand_preprocessing/
           git diff --quiet && git diff --staged --quiet || (git commit -m "ci: automated data update [runID ${{ steps.run_id.outputs.RUN_ID }}]" && git push)
 
-      - name: Build and Push Docker Image
+      - name: 12. Authenticate Docker Container Registry
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: 13. Build Production Docker Image
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest .
+
+      - name: 14. Dispatch Image to Docker Hub
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest
