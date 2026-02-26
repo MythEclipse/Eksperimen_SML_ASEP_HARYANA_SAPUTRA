@@ -130,7 +130,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="MLflow autolog modelling — Poker Hand")
     parser.add_argument(
         "--preprocessed-dir",
-        default=os.path.join(os.path.dirname(__file__), "..", "preprocessing", "pokerhand_preprocessing"),
+        default=os.path.join(os.path.dirname(__file__), "pokerhand_preprocessing"),
         help="Directory with preprocessed CSVs",
     )
     parser.add_argument(

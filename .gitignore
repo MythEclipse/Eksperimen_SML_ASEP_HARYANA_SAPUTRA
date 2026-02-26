@@ -23,10 +23,11 @@ env/
 .idea/
 .vscode/
 
-# MLflow — keep mlruns tracked (small) but exclude large model binaries if needed
-# Uncomment to exclude mlruns entirely:
-# Membangun_model/mlruns/
-# Workflow-CI/MLProject/mlruns/
+# MLflow
+mlflow.db
+mlruns/
+**/mlruns/
 
-# Large raw files — tracked explicitly
-# pokerhand_raw/poker-hand-testing.data  # 23MB — exclude if needed
+# Python artifacts
+*.pkl
+*.joblib

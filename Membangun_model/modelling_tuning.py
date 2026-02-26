@@ -267,7 +267,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="MLflow manual logging tuning — Poker Hand")
     parser.add_argument(
         "--preprocessed-dir",
-        default=os.path.join(os.path.dirname(__file__), "..", "preprocessing", "pokerhand_preprocessing"),
+        default=os.path.join(os.path.dirname(__file__), "pokerhand_preprocessing"),
     )
     parser.add_argument("--experiment-name", default="poker-hand-tuning")
     parser.add_argument("--tracking-uri",    default="mlruns")
