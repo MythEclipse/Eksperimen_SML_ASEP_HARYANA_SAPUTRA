@@ -119,11 +119,18 @@ def capture_all_assets():
         # C. Grafana Panels (11 Panels)
         print("Capturing 11 Grafana Panels...")
         page.goto(f"{GRAFANA_URL}/login")
-        if page.locator('input[name="user"]').is_visible():
+        page.wait_for_load_state("networkidle")
+        
+        # Robust Login
+        if "login" in page.url:
+            print("Performing login...")
             page.fill('input[name="user"]', "admin")
             page.fill('input[name="password"]', "admin123")
             page.click('button[type="submit"]')
-            page.wait_for_timeout(2000)
+            # Wait for dashboard to load or URL to change
+            page.wait_for_url(lambda url: "login" not in url, timeout=10000)
+            page.wait_for_timeout(5000) # Give time for session cookies to settle
+            print(f"Logged in. Current URL: {page.url}")
 
         panels = [
             ("total_requests", 1), ("p95_latency", 2), ("total_errors", 3), ("data_drift_psi", 4),
@@ -131,30 +138,39 @@ def capture_all_assets():
             ("feature_drift", 9), ("confidence_scores", 10), ("active_connections_batch", 11)
         ]
         for i, (name, pid) in enumerate(panels, 1):
-            page.goto(f"{GRAFANA_URL}/d/poker-hand-monitoring?viewPanel={pid}&orgId=1&kiosk")
-            page.wait_for_timeout(3500)
+            target_url = f"{GRAFANA_URL}/d/poker-hand-monitoring?viewPanel={pid}&orgId=1&kiosk"
+            print(f"Capturing Panel {pid} ({name})...")
+            page.goto(target_url, wait_until="networkidle")
+            page.wait_for_timeout(5000) # Ensure graphs are fully drawn
+            
+            # Final check: if we got kicked back to login, try again once
+            if "login" in page.url:
+                print(f"Warning: Redirected to login on panel {pid}. Re-attempting login once...")
+                page.goto(f"{GRAFANA_URL}/login")
+                page.fill('input[name="user"]', "admin")
+                page.fill('input[name="password"]', "admin123")
+                page.click('button[type="submit"]')
+                page.wait_for_timeout(3000)
+                page.goto(target_url, wait_until="networkidle")
+                page.wait_for_timeout(4000)
+                
             page.screenshot(path=str(MONITORING_DIR / f"5.bukti monitoring Grafana/{i}.monitoring_{name}.jpg"))
 
         # D. Alerting (6 Detailed Proofs)
         print("Capturing 6 Alerting Proofs...")
-        page.goto(f"{GRAFANA_URL}/alerting/list")
-        page.wait_for_timeout(4000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/1.rules_list_view.jpg"))
-        page.goto(f"{GRAFANA_URL}/alerting/list?search=ModelHighErrorRate")
-        page.wait_for_timeout(2000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/2.rules_ModelHighErrorRate_status.jpg"))
-        page.goto(f"{GRAFANA_URL}/alerting/list?search=ModelHighLatency")
-        page.wait_for_timeout(2000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/3.rules_ModelHighLatency_status.jpg"))
-        page.goto(f"{GRAFANA_URL}/alerting/notifications")
-        page.wait_for_timeout(3000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/4.notifikasi_contact_points.jpg"))
-        page.goto(f"{GRAFANA_URL}/alerting/routes")
-        page.wait_for_timeout(3000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/5.notifikasi_notification_policies.jpg"))
-        page.goto(f"{GRAFANA_URL}/alerting/list")
-        page.wait_for_timeout(2000)
-        page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/6.notifikasi_alert_summary_authentic.jpg"))
+        alert_views = [
+            ("1.rules_list_view.jpg", f"{GRAFANA_URL}/alerting/list"),
+            ("2.rules_ModelHighErrorRate_status.jpg", f"{GRAFANA_URL}/alerting/list?search=ModelHighErrorRate"),
+            ("3.rules_ModelHighLatency_status.jpg", f"{GRAFANA_URL}/alerting/list?search=ModelHighLatency"),
+            ("4.notifikasi_contact_points.jpg", f"{GRAFANA_URL}/alerting/notifications"),
+            ("5.notifikasi_notification_policies.jpg", f"{GRAFANA_URL}/alerting/routes"),
+            ("6.notifikasi_alert_summary_authentic.jpg", f"{GRAFANA_URL}/alerting/list")
+        ]
+        for filename, url in alert_views:
+            print(f"Capturing Alert View: {filename}...")
+            page.goto(url, wait_until="networkidle")
+            page.wait_for_timeout(4000)
+            page.screenshot(path=str(MONITORING_DIR / f"6.bukti alerting Grafana/{filename}"))
 
         browser.close()
 
