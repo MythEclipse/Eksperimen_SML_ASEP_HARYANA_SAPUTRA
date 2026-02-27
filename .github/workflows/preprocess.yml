@@ -10,6 +10,8 @@ on:
 jobs:
   ml-pipeline:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
