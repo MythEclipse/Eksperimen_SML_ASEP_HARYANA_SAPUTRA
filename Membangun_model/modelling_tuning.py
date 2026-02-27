@@ -197,13 +197,22 @@ def run_tuning(
         log.info("Test set metrics — acc=%.4f f1_w=%.4f f1_macro=%.4f", acc, f1_w, f1_macro)
 
         # ---------- Log model ----------
-        mlflow.sklearn.log_model(
+        model_info = mlflow.sklearn.log_model(
             sk_model=best_model,
             artifact_path="best_model",
-            registered_model_name="PokerHand-RandomForest",
             input_example=X_test[:5],
         )
-        log.info("Model logged to artifact store.")
+        log.info("Model logged to artifact store: %s", model_info.model_uri)
+
+        # ---------- Register model (Separate call for reliability) ----------
+        try:
+            mlflow.register_model(
+                model_uri=model_info.model_uri,
+                name="PokerHand-RandomForest"
+            )
+            log.info("Model registered to registry.")
+        except Exception as e:
+            log.warning("Model registration failed (non-critical): %s", e)
 
         # ---------- Classification report ----------
         report = classification_report(
