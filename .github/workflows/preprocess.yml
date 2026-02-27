@@ -84,6 +84,21 @@ jobs:
       - name: 8. Build and Push Production Docker Image
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
         run: |
+          # 1. Download model artifacts locally so they are baked into the image
+          python -c "
+          import mlflow, os
+          mlflow.set_tracking_uri('https://dagshub.com/mytheclipse/Eksperimen_SML_ASEP_HARYANA_SAPUTRA.mlflow')
+          run_id = '${{ steps.run_id.outputs.RUN_ID }}'
+          if run_id:
+              print(f'Downloading model from run {run_id}...')
+              mlflow.artifacts.download_artifacts(run_id=run_id, artifact_path='best_model', dst_path='.')
+          else:
+              print('Warning: No RUN_ID found, skipping model bake-in.')
+          "
+          # 2. Login and Build
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker build -t ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/pokerhand-model:latest
+        env:
+          MLFLOW_TRACKING_USERNAME: mytheclipse
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
