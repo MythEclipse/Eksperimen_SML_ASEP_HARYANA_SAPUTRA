@@ -42,7 +42,7 @@ jobs:
         run: |
           python -c "
           import dagshub, os
-          dagshub.init(repo_owner='mytheclipse', repo_name='Eksperimen_SML_ASEP_HARYANA_SAPUTRA', setup_mlflow=True)
+          dagshub.init(repo_owner='mytheclipse', repo_name='Eksperimen_SML_ASEP_HARYANA_SAPUTRA')
           os.system('python Membangun_model/modelling_tuning.py --tracking-uri https://dagshub.com/mytheclipse/Eksperimen_SML_ASEP_HARYANA_SAPUTRA.mlflow')
           "
         env:
