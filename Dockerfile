@@ -25,6 +25,5 @@ COPY . .
 # Expose ports for Prometheus and MLflow (if serving)
 EXPOSE 8000 5001
 
-# Default command: Run inference test
-# This validates the model is working correctly within the container
-CMD ["python", "Monitoring dan Logging/7.inference.py", "--mode", "local"]
+# Default command: Run inference test using the local baked-in model
+CMD ["python", "Monitoring dan Logging/7.inference.py", "--mode", "local", "--model-uri", "best_model_local"]

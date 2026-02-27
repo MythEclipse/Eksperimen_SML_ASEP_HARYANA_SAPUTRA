@@ -204,6 +204,19 @@ def run_tuning(
         )
         log.info("Model logged to artifact store: %s", model_info.model_uri)
 
+        # ---------- Save model locally for Docker bake-in ----------
+        import shutil
+        # Save to repo root if possible, or same dir
+        local_export_path = Path("best_model_local")
+        if local_export_path.exists():
+            shutil.rmtree(local_export_path)
+        mlflow.sklearn.save_model(
+            sk_model=best_model,
+            path=str(local_export_path),
+            input_example=X_test[:5]
+        )
+        log.info("Model saved locally for Docker bake-in at: %s", local_export_path)
+
         # ---------- Register model (Separate call for reliability) ----------
         try:
             mlflow.register_model(
