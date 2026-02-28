@@ -32,6 +32,8 @@ mlruns/
 *.pkl
 *.joblib
 submission_package/
+*.zip
+submission_ASEP_HARYANA_SAPUTRA.zip
 
 # DVC
 .dvc/cache
