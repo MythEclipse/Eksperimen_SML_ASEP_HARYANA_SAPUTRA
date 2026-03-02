@@ -113,7 +113,7 @@ def capture_all_assets():
 
         print("Capturing MLflow Dashboards...")
         try:
-            page.goto("http://localhost:5000")
+            page.goto("http://localhost:5000", wait_until="networkidle")
             page.wait_for_timeout(5000)
             page.screenshot(path=str(MEMBANGUN_MODEL_DIR / "screenshoot_dashboard.jpg"))
             # Safer wait for first run
@@ -129,7 +129,7 @@ def capture_all_assets():
 
         print("Capturing Serving proof...")
         try:
-            page.goto(f"{EXPORTER_URL}/metrics")
+            page.goto(f"{EXPORTER_URL}/metrics", wait_until="networkidle")
             page.wait_for_timeout(2000)
             page.screenshot(path=str(MONITORING_DIR / "1.bukti_serving.jpg"), full_page=True)
         except Exception as e:
@@ -139,7 +139,7 @@ def capture_all_assets():
         prom_queries = ["model_request_count_total", "rate(model_response_latency_seconds_sum[5m])", "model_prediction_class_total"]
         for i, q in enumerate(prom_queries, 1):
             try:
-                page.goto(f"{PROM_URL}/graph?g0.expr={q}&g0.tab=0&g0.range_input=1h")
+                page.goto(f"{PROM_URL}/graph?g0.expr={q}&g0.tab=0&g0.range_input=1h", wait_until="networkidle")
                 page.wait_for_timeout(3000)
                 page.screenshot(path=str(MONITORING_DIR / f"4.bukti monitoring Prometheus/monitoring_metric_{i}.jpg"))
             except Exception as e:
@@ -147,7 +147,7 @@ def capture_all_assets():
 
         print("Performing Grafana Login...")
         try:
-            page.goto(f"{GRAFANA_URL}/login")
+            page.goto(f"{GRAFANA_URL}/login", wait_until="networkidle")
             if "login" in page.url:
                 page.fill('input[name="user"]', "mytheclipse")
                 page.fill('input[name="password"]', "admin123")
@@ -156,30 +156,49 @@ def capture_all_assets():
 
             print("Capturing Full Dashboard (Branded)...")
             # Remove &kiosk to show the header with Dashboard name
-            page.goto(f"{GRAFANA_URL}/d/poker-hand-monitoring?orgId=1")
+            page.goto(f"{GRAFANA_URL}/d/poker-hand-monitoring?orgId=1", wait_until="networkidle")
             page.wait_for_timeout(7000)
             page.screenshot(path=str(MONITORING_DIR / "5.bukti monitoring Grafana/monitoring_dashboard_full.jpg"), full_page=True)
 
             print("Capturing Alerting Proofs (Rules & Notifications)...")
             # 1. Rules list view (Proof of multiple rules)
-            page.goto(f"{GRAFANA_URL}/alerting/list")
+            page.goto(f"{GRAFANA_URL}/alerting/list", wait_until="networkidle")
             page.wait_for_timeout(4000)
             page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/rules_status_mytheclipse.jpg"), full_page=True)
 
             # 2. Notification contact point proof (SHOWING EMAIL)
             print("Capturing Contact Point Proof (Email: superaseph@gmail.com)...")
-            page.goto(f"{GRAFANA_URL}/alerting/notifications")
+            page.goto(f"{GRAFANA_URL}/alerting/notifications", wait_until="networkidle")
             page.wait_for_timeout(5000)
             page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/notifikasi_contact_point_mytheclipse.jpg"), full_page=True)
             
             # 3. Prometheus Targets (Proof of Node Exporter)
             print("Capturing Prometheus Targets (Node Exporter proof)...")
-            page.goto(f"{PROM_URL}/targets")
+            page.goto(f"{PROM_URL}/targets", wait_until="networkidle")
             page.wait_for_timeout(3000)
             page.screenshot(path=str(MONITORING_DIR / "4.bukti monitoring Prometheus/prometheus_targets_node_exporter.jpg"), full_page=True)
 
         except Exception as e:
             print(f"Grafana/Alerting capture failed: {e}")
+
+
+        print("Capturing Delivered Alert Email (MailHog Proof)...")
+        try:
+            page.goto("http://localhost:8025/", wait_until="networkidle")
+            page.wait_for_timeout(4000)
+            
+            first_email = page.locator(".msglist-message:first-child")
+            if first_email.count() > 0:
+                first_email.click()
+                page.wait_for_timeout(3000)
+                page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/notifikasi_email_masuk.jpg"), full_page=True)
+                print("Email screenshot captured successfully.")
+            else:
+                print("No emails found in Mailhog inbox yet.")
+                page.screenshot(path=str(MONITORING_DIR / "6.bukti alerting Grafana/notifikasi_email_masuk.jpg"), full_page=True)
+
+        except Exception as e:
+            print(f"Mailhog email capture failed: {e}")
 
         browser.close()
 
