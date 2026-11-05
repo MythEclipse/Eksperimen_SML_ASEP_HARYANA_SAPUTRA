@@ -197,10 +197,20 @@ def run_tuning(
         log.info("Test set metrics — acc=%.4f f1_w=%.4f f1_macro=%.4f", acc, f1_w, f1_macro)
 
         # ---------- Log model ----------
+        # `skops` refuses to deserialise a model whose pickled types are not on
+        # its allow-list, and it does NOT trust `sklearn.tree._tree.Tree` by
+        # default — which every tree-based model (this RandomForest included)
+        # contains. Without this the run dies at log_model time with
+        # `UntrustedTypesFoundException`, after the whole grid search has already
+        # been paid for. Listing the type is safe here: the file is one this job
+        # just produced in-process, not an artifact from an untrusted source.
+        trusted = ["sklearn.tree._tree.Tree"]
+
         model_info = mlflow.sklearn.log_model(
             sk_model=best_model,
             artifact_path="best_model",
             input_example=X_test[:5],
+            skops_trusted_types=trusted,
         )
         log.info("Model logged to artifact store: %s", model_info.model_uri)
 
@@ -213,7 +223,8 @@ def run_tuning(
         mlflow.sklearn.save_model(
             sk_model=best_model,
             path=str(local_export_path),
-            input_example=X_test[:5]
+            input_example=X_test[:5],
+            skops_trusted_types=trusted,
         )
         log.info("Model saved locally for Docker bake-in at: %s", local_export_path)
 
