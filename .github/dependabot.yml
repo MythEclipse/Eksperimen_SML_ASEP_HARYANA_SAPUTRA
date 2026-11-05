@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies]
+    # Weekly, not daily: these are notebook/experiment repos where a bump is
+    # rarely urgent, and a daily queue would bury the real projects.
+    cooldown:
+      default-days: 3
+    groups:
+      python-dependencies:
+        patterns: ["*"]
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies]
+    cooldown:
+      default-days: 3
+    groups:
+      actions:
+        patterns: ["*"]
