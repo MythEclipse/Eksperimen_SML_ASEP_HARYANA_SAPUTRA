@@ -19,10 +19,10 @@ jobs:
 
     steps:
       - name: 1. Fetch Repository Contents
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: 2. Initialize Python Environment (3.11)
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"

@@ -123,12 +123,13 @@ def print_results(X: np.ndarray, preds: np.ndarray, proba: np.ndarray | None = N
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inference test for Poker Hand model")
-    parser.add_argument("--mode",       choices=["local", "rest"], default="local")
-    parser.add_argument("--model-uri",  default=None, help="MLflow model URI (local mode)")
-    parser.add_argument("--endpoint",   default="http://localhost:5001/invocations",
+    parser.add_argument("--mode", choices=["local", "rest"], default="local",
+                        help="Inference mode: local (loaded model) or rest (HTTP endpoint)")
+    parser.add_argument("--model-uri", default=None,
+                        help="MLflow model URI (local mode)")
+    parser.add_argument("--endpoint", default="http://localhost:5001/invocations",
                         help="REST endpoint URL (rest mode)")
-    parser.add_argument("--preprocessed-dir",
-                        default=os.path.join(os.path.dirname(__file__), "..", "preprocessing", "pokerhand_preprocessing") if False else None,
+    parser.add_argument("--preprocessed-dir", default=None,
                         help="Directory with preprocessed CSVs for bulk test")
     args = parser.parse_args()
 
@@ -168,8 +169,6 @@ def main() -> None:
 
     print_results(X, preds, proba)
 
-
-import os  # noqa: E402 — needed for os.path.join in default arg
 
 if __name__ == "__main__":
     main()

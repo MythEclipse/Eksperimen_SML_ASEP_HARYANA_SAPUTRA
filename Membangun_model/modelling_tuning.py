@@ -197,20 +197,10 @@ def run_tuning(
         log.info("Test set metrics — acc=%.4f f1_w=%.4f f1_macro=%.4f", acc, f1_w, f1_macro)
 
         # ---------- Log model ----------
-        # `skops` refuses to deserialise a model whose pickled types are not on
-        # its allow-list, and it does NOT trust `sklearn.tree._tree.Tree` by
-        # default — which every tree-based model (this RandomForest included)
-        # contains. Without this the run dies at log_model time with
-        # `UntrustedTypesFoundException`, after the whole grid search has already
-        # been paid for. Listing the type is safe here: the file is one this job
-        # just produced in-process, not an artifact from an untrusted source.
-        trusted = ["sklearn.tree._tree.Tree"]
-
         model_info = mlflow.sklearn.log_model(
             sk_model=best_model,
             artifact_path="best_model",
             input_example=X_test[:5],
-            skops_trusted_types=trusted,
         )
         log.info("Model logged to artifact store: %s", model_info.model_uri)
 
@@ -223,8 +213,7 @@ def run_tuning(
         mlflow.sklearn.save_model(
             sk_model=best_model,
             path=str(local_export_path),
-            input_example=X_test[:5],
-            skops_trusted_types=trusted,
+            input_example=X_test[:5]
         )
         log.info("Model saved locally for Docker bake-in at: %s", local_export_path)
 
@@ -260,10 +249,6 @@ def run_tuning(
         log.info("Confusion matrix logged.")
 
         # ---------- Feature importance plot ----------
-        feature_names = pd.read_csv(
-            Path(args_preprocessed_dir) / "X_train.csv" if False else X_train.shape  # patched below
-        ) if False else None
-
         _log_feature_importance(best_model, X_train.shape[1])
 
     log.info("Tuning run complete. View with: mlflow ui --port 5000")
@@ -295,8 +280,6 @@ def _log_feature_importance(model: RandomForestClassifier, n_features: int) -> N
 
 
 def main() -> None:
-    global args_preprocessed_dir
-
     parser = argparse.ArgumentParser(description="MLflow manual logging tuning — Poker Hand")
     parser.add_argument(
         "--preprocessed-dir",
@@ -305,8 +288,6 @@ def main() -> None:
     parser.add_argument("--experiment-name", default="poker-hand-tuning")
     parser.add_argument("--tracking-uri",    default="mlruns")
     args = parser.parse_args()
-
-    args_preprocessed_dir = args.preprocessed_dir
 
     X_train, X_test, y_train, y_test = load_preprocessed(args.preprocessed_dir)
     run_tuning(X_train, X_test, y_train, y_test, args.experiment_name, args.tracking_uri)
