@@ -1,4 +1,4 @@
-numpy>=1.24
+numpy>=2.5.4
 pandas>=2.0
 scikit-learn>=1.9.1
 imbalanced-learn>=0.14.2
