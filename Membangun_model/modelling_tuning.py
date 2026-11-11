@@ -249,10 +249,6 @@ def run_tuning(
         log.info("Confusion matrix logged.")
 
         # ---------- Feature importance plot ----------
-        feature_names = pd.read_csv(
-            Path(args_preprocessed_dir) / "X_train.csv" if False else X_train.shape  # patched below
-        ) if False else None
-
         _log_feature_importance(best_model, X_train.shape[1])
 
     log.info("Tuning run complete. View with: mlflow ui --port 5000")
@@ -284,8 +280,6 @@ def _log_feature_importance(model: RandomForestClassifier, n_features: int) -> N
 
 
 def main() -> None:
-    global args_preprocessed_dir
-
     parser = argparse.ArgumentParser(description="MLflow manual logging tuning — Poker Hand")
     parser.add_argument(
         "--preprocessed-dir",
@@ -294,8 +288,6 @@ def main() -> None:
     parser.add_argument("--experiment-name", default="poker-hand-tuning")
     parser.add_argument("--tracking-uri",    default="mlruns")
     args = parser.parse_args()
-
-    args_preprocessed_dir = args.preprocessed_dir
 
     X_train, X_test, y_train, y_test = load_preprocessed(args.preprocessed_dir)
     run_tuning(X_train, X_test, y_train, y_test, args.experiment_name, args.tracking_uri)
