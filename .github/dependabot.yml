@@ -126,10 +126,10 @@ updates:
         dependency-type: "production"
 
   # Derived from 14 open Dependabot alerts on
-  # /best_model_local — without this lane Dependabot never sees the manifest, so
+  # /local_model_export — without this lane Dependabot never sees the manifest, so
   # the advisory can never become a PR. Re-derived on every sync; do not edit.
   - package-ecosystem: "pip"
-    directory: "/best_model_local"
+    directory: "/local_model_export"
     schedule:
       interval: "weekly"
       day: "monday"
