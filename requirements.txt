@@ -1,7 +1,7 @@
 numpy>=2.5.4
 pandas>=2.0
 matplotlib>=3.11.2
-seaborn>=0.12
+seaborn>=0.13.2
 scikit-learn>=1.9.1
 imbalanced-learn>=0.14.2
 joblib>=1.6.0
